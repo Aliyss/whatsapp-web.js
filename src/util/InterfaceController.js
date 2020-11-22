@@ -32,6 +32,19 @@ class InterfaceController {
     }
 
     /**
+     * Opens the Group Call Prompt
+     * @param {string} chatId ID of the chat to initiate the group call
+     * @param {boolean} isVideo defines if call to initiate should be a video or audio call
+     */
+    async openGroupCallPrompt(chatId, isVideo=false) {
+        await this.pupPage.evaluate(async (chatId, isVideo) => {
+            let chat = await window.Store.Chat.get(chatId);
+            await window.Store.Cmd.openChatAt(chat);
+            await window.Store.Cmd.startGroupCall(chat, isVideo);
+        }, chatId, isVideo);
+    }
+
+    /**
      * Opens the Message Drawer
      * @param {string} msgId ID of the message drawer that will be opened
      */
